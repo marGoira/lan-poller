@@ -1,6 +1,16 @@
 # lan-poller
 Implementation for garageLanParty
 
+## Important
+Install django (I assume that python and pip is already installed):
+```bash
+pip install django
+```
+Or:
+```bash
+apt install python-django
+```
+
 ## Usage Hints
 
 ### Create a User
@@ -24,5 +34,6 @@ Start your development server with:
 python manage.py runserver
 ```
 
-### Admin Control
+### Pages
 Access the admin interface at: http://localhost:port/admin
+Polling site at: http://localhost:port/poller
