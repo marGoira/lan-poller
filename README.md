@@ -34,6 +34,6 @@ Start your development server with:
 python manage.py runserver
 ```
 
-### Pages
+### Pages 
 Access the admin interface at: http://localhost:port/admin
 Polling site at: http://localhost:port/poller
