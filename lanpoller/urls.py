@@ -21,5 +21,6 @@ from poller import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index_view, name='index'),
+    path('results/', views.results_view, name='results'),
     path('poller/', views.poller_view, name='poller'),
 ]

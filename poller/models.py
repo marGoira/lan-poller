@@ -2,11 +2,12 @@ from django.db import models
 
 class Game(models.Model):
     name = models.CharField(max_length=200)
+
     def __str__(self):
         return self.name
 
 class Vote(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    votes = models.IntegerField(default=0)
+    game_order = models.JSONField(default=list)
+
     def __str__(self):
-        return f"{self.game.name}: {self.votes} votes"
+        return str(self.game_order)

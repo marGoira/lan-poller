@@ -32,26 +32,44 @@
         ul {
             list-style-type: none;
             padding: 0;
+            width: 200px;
         }
         li {
             margin: 5px 0;
+            padding: 10px;
+            background-color: #333;
+            cursor: move;
+            user-select: none;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function() {
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+        });
+        function submitForm() {
+            var gameOrder = $("#sortable").sortable("toArray", { attribute: "id" });
+            $("input[name='game_order']").val(JSON.stringify(gameOrder));
+            console.log("Game Order Input Value:", $("input[name='game_order']").val());  
+        }
+    </script>
+    
 </head>
 <body>
     <div class="content">
         <h1>Vote for Your Favorite Game</h1>
-        <form method="post">
+        <form method="post" onsubmit="submitForm()">
             {% csrf_token %}
-            {{ form.as_p }}
+            <ul id="sortable">
+                {% for game in games %}
+                    <li id="{{ game.id }}">{{ game.name }}</li>
+                {% endfor %}
+            </ul>
+            <input type="hidden" name="game_order">
             <button type="submit">Vote</button>
         </form>
-        <h2>Current Votes</h2>
-        <ul>
-            {% for game in games %}
-                <li>{{ game.name }}: {{ game.vote_set.first.votes }} votes</li>
-            {% endfor %}
-        </ul>
     </div>
 </body>
 </html>
