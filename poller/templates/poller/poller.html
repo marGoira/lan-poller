@@ -49,18 +49,23 @@
             $("#sortable").sortable();
             $("#sortable").disableSelection();
         });
+
         function submitForm() {
             var gameOrder = $("#sortable").sortable("toArray", { attribute: "id" });
             $("input[name='game_order']").val(JSON.stringify(gameOrder));
-            console.log("Game Order Input Value:", $("input[name='game_order']").val());  
+            document.getElementById('submitButton').disabled = true;
+            return true;
+        }
+
+        window.onload = function() {
+            document.getElementById('submitButton').disabled = false;
         }
     </script>
-    
 </head>
 <body>
     <div class="content">
-        <h1>Vote for Your Favorite Game</h1>
-        <form method="post" onsubmit="submitForm()">
+        <h1>Vote the order</h1>
+        <form method="post" onsubmit="return submitForm()">
             {% csrf_token %}
             <ul id="sortable">
                 {% for game in games %}
@@ -68,7 +73,7 @@
                 {% endfor %}
             </ul>
             <input type="hidden" name="game_order">
-            <button type="submit">Vote</button>
+            <button id="submitButton" type="submit" disabled>Vote</button>
         </form>
     </div>
 </body>

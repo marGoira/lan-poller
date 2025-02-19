@@ -32,8 +32,17 @@ def results_view(request):
     
     sorted_games = sorted(game_points.items(), key=lambda item: item[1], reverse=True)
     winner_order = [game_dict[str(game_id)] for game_id, points in sorted_games]
+    winner_scores = [points for game_id, points in sorted_games]
     
-    return render(request, 'results.html', {'votes': votes, 'winner_order': winner_order})
+    context = {
+        'votes': votes,
+        'winner_order': winner_order,
+        'winner_order_json': json.dumps(winner_order),
+        'winner_scores_json': json.dumps(winner_scores),
+    }
+    
+    return render(request, 'results.html', context)
+
 
 def index_view(request):
     return render(request, 'index.html')

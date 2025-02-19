@@ -20,14 +20,71 @@
             color: white;
             text-decoration: underline;
         }
+        #timer {
+            font-size: 24px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="content">
         <h1>Welcome to the LAN Poller</h1>
         <p>
-            You can manage the site at <a href="/admin">/admin</a> and access the poll at <a href="/poller">/poller</a>.
+            You can manage the site at <a href="/admin">/admin</a><br>
+            Access the poll at <a href="/poller">/poller</a><br>
+            View the results at <a href="/results">/results</a>
         </p>
+        <div id="timer"></div>
+        <div id="currentGame"></div>
+        <button id="startTimerButton" disabled>Start Timer</button>
     </div>
+    <script>
+        let winnerOrder = [];
+        let currentGameIndex = 0;
+        let gameDuration = 60 * 2; // 2 minutes per game, just testing this.
+        let countdown;
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    nextGame();
+                }
+            }, 1000);
+        }
+
+        function nextGame() {
+            if (currentGameIndex < winnerOrder.length - 1) {
+                currentGameIndex++;
+                document.getElementById('currentGame').textContent = "Current Game: " + winnerOrder[currentGameIndex];
+                startTimer(gameDuration, document.getElementById('timer'));
+            } else {
+                document.getElementById('currentGame').textContent = "All games completed!";
+            }
+        }
+
+        window.onload = function() {
+            // Fetch winner order from localStorage or disable the start button if not available
+            winnerOrder = JSON.parse(localStorage.getItem('winnerOrder')) || [];
+            if (winnerOrder.length > 0) {
+                document.getElementById('startTimerButton').disabled = false;
+                document.getElementById('startTimerButton').addEventListener('click', function() {
+                    document.getElementById('currentGame').textContent = "Current Game: " + winnerOrder[currentGameIndex];
+                    startTimer(gameDuration, document.getElementById('timer'));
+                });
+            } else {
+                document.getElementById('currentGame').textContent = "No winner order available. Please complete the poll first.";
+            }
+        }
+    </script>
 </body>
 </html>
