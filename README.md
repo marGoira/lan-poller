@@ -37,3 +37,4 @@ python manage.py runserver
 ### Pages 
 Access the admin interface at: http://localhost:port/admin
 Polling site at: http://localhost:port/poller
+Results at: http://localhost:port/results
